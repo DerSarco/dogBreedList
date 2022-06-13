@@ -13,7 +13,7 @@ at 12-06-22 20:19
 com.sarco.dogbreed.ui.fragments.dogBreedList
 nobody cares about rights reserved.
  ******/
-class DogBreedListAdapter( private val listener: (String) -> Unit) :
+class DogBreedListAdapter(private val listener: (String) -> Unit) :
     RecyclerView.Adapter<DogBreedListAdapter.ViewHolder>() {
     private var list: List<String> = listOf()
     private lateinit var binding: DogBreedRowItemBinding

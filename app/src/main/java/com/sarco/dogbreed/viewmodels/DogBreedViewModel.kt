@@ -1,5 +1,6 @@
 package com.sarco.dogbreed.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,15 +24,22 @@ nobody cares about rights reserved.
  ******/
 class DogBreedViewModel(private val repository: BreedListRepository) : ViewModel() {
 
-    var isLoading = MutableLiveData<Boolean>()
+    private val TAG = "DogBreedViewModel"
+
+    private var loading = MutableLiveData<Boolean>()
+    val isLoading: MutableLiveData<Boolean>
+        get() = loading
 
     private val dogBreedList = MutableLiveData<List<String>>()
     val dogBreedListInfo: MutableLiveData<List<String>>
         get() = dogBreedList
 
-    fun getBreedList() = viewModelScope.launch(Dispatchers.IO) {
-        isLoading.postValue(true)
-        dogBreedList.postValue(repository.getBreedList().first())
+    suspend fun getBreedList() = viewModelScope.launch() {
+        loading.postValue(true)
+        val dataResponse = repository.getBreedList().first()
+        dogBreedList.postValue(dataResponse).also {
+            loading.postValue(false)
+        }
     }
 
     class DogBreedViewModelFactory(
