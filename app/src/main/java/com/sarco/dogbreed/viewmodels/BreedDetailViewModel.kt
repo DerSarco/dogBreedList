@@ -5,11 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.sarco.dogbreed.data.entities.BreedData
-import com.sarco.dogbreed.data.entities.BreedListResponse
 import com.sarco.dogbreed.repository.BreedListRepository
-import com.sarco.dogbreed.service.BreedListService
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,7 +18,7 @@ at 13-06-22 08:59
 com.sarco.dogbreed.viewmodels
 nobody cares about rights reserved.
  ******/
-class DogBreedDetailViewModel(
+class BreedDetailViewModel(
     private val repository: BreedListRepository
 ) : ViewModel() {
 
@@ -50,8 +47,8 @@ class DogBreedDetailViewModel(
         ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(DogBreedDetailViewModel::class.java)) {
-                return DogBreedDetailViewModel(repository) as T
+            if (modelClass.isAssignableFrom(BreedDetailViewModel::class.java)) {
+                return BreedDetailViewModel(repository) as T
             } else {
                 throw NullPointerException("ViewModel Class Unknown")
             }

@@ -1,4 +1,4 @@
-package com.sarco.dogbreed.ui.fragments.dogBreedList
+package com.sarco.dogbreed.ui.fragments.breedList
 
 import android.os.Bundle
 import android.view.*
@@ -15,19 +15,19 @@ import com.sarco.dogbreed.databinding.FragmentDogBreedListBinding
 import com.sarco.dogbreed.repository.BreedListRepository
 import com.sarco.dogbreed.service.BreedListService
 import com.sarco.dogbreed.ui.fragments.bredDetailList.BreedDetailListFragment
-import com.sarco.dogbreed.viewmodels.DogBreedViewModel
+import com.sarco.dogbreed.viewmodels.BreedViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class DogBreedListFragment : Fragment() {
+class BreedListFragment : Fragment() {
 
     private var TAG: String = "DogBreedListFragment"
 
     private lateinit var binding: FragmentDogBreedListBinding
-    private lateinit var adapter: DogBreedListAdapter
-    private lateinit var viewModel: DogBreedViewModel
+    private lateinit var adapter: BreedListAdapter
+    private lateinit var viewModel: BreedViewModel
 
 
     private val service = BreedListService(BreedNetwork.getRetrofitAllBreedList())
@@ -75,14 +75,14 @@ class DogBreedListFragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            DogBreedViewModel.DogBreedViewModelFactory(repository)
-        )[DogBreedViewModel::class.java]
+            BreedViewModel.DogBreedViewModelFactory(repository)
+        )[BreedViewModel::class.java]
     }
 
     private fun setupAdapter() {
         //todo: agregar los perritos
 
-        adapter = DogBreedListAdapter() { dogBreedName ->
+        adapter = BreedListAdapter() { dogBreedName ->
             val bundle = bundleOf(BreedDetailListFragment.BREED_KEY to dogBreedName)
             view?.findNavController()
                 ?.navigate(R.id.action_dogBreedListFragment_to_breedDetailListFragment, bundle)
@@ -107,7 +107,7 @@ class DogBreedListFragment : Fragment() {
 
     private fun setupUI() {
         binding.recyclerViewDogBreed.apply {
-            adapter = this@DogBreedListFragment.adapter
+            adapter = this@BreedListFragment.adapter
             layoutManager = GridLayoutManager(context, 2)
         }
 

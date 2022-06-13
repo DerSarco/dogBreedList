@@ -8,8 +8,6 @@ import coil.load
 import com.sarco.dogbreed.R
 import com.sarco.dogbreed.data.entities.BreedData
 import com.sarco.dogbreed.databinding.BreedFavoriteItemRowBinding
-import com.sarco.dogbreed.databinding.DogBreedRowItemBinding
-import com.sarco.dogbreed.ui.fragments.dogBreedList.DogBreedListAdapter
 
 /******
 Project dogBreed made with love by carlosmunoz

@@ -1,14 +1,13 @@
 package com.sarco.dogbreed.ui.fragments.bredDetailList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
@@ -19,8 +18,7 @@ import com.sarco.dogbreed.databinding.FragmentBreedDetailListBinding
 import com.sarco.dogbreed.repository.BreedListRepository
 import com.sarco.dogbreed.service.BreedListService
 import com.sarco.dogbreed.userFavs
-import com.sarco.dogbreed.viewmodels.DogBreedDetailViewModel
-import com.sarco.dogbreed.viewmodels.DogBreedViewModel
+import com.sarco.dogbreed.viewmodels.BreedDetailViewModel
 
 class BreedDetailListFragment : Fragment() {
 
@@ -31,7 +29,7 @@ class BreedDetailListFragment : Fragment() {
     private lateinit var binding: FragmentBreedDetailListBinding
     private lateinit var adapter: BreedDetailListAdapter
 
-    private lateinit var viewModel: DogBreedDetailViewModel
+    private lateinit var viewModel: BreedDetailViewModel
 
 
     private val service = BreedListService(BreedNetwork.getRetrofitAllBreedList())
@@ -91,8 +89,8 @@ class BreedDetailListFragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProvider(
             this,
-            DogBreedDetailViewModel.DogBreedDetailFactory(repository)
-        )[DogBreedDetailViewModel::class.java]
+            BreedDetailViewModel.DogBreedDetailFactory(repository)
+        )[BreedDetailViewModel::class.java]
 
     }
 

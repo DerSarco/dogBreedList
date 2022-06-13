@@ -1,6 +1,5 @@
 package com.sarco.dogbreed.repository
 
-import android.accounts.NetworkErrorException
 import android.util.Log
 import com.google.gson.Gson
 import com.sarco.dogbreed.data.entities.BreedData
@@ -8,9 +7,7 @@ import com.sarco.dogbreed.service.BreedListService
 import com.sarco.dogbreed.userFavs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import java.nio.channels.NetworkChannel
 
 /******
 Project dogBreed made with love by carlosmunoz

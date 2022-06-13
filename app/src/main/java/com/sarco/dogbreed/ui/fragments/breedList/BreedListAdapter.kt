@@ -1,4 +1,4 @@
-package com.sarco.dogbreed.ui.fragments.dogBreedList
+package com.sarco.dogbreed.ui.fragments.breedList
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -13,8 +13,8 @@ at 12-06-22 20:19
 com.sarco.dogbreed.ui.fragments.dogBreedList
 nobody cares about rights reserved.
  ******/
-class DogBreedListAdapter(private val listener: (String) -> Unit) :
-    RecyclerView.Adapter<DogBreedListAdapter.ViewHolder>() {
+class BreedListAdapter(private val listener: (String) -> Unit) :
+    RecyclerView.Adapter<BreedListAdapter.ViewHolder>() {
     private var list: List<String> = listOf()
     private lateinit var binding: DogBreedRowItemBinding
     private lateinit var context: Context

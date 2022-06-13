@@ -1,19 +1,12 @@
 package com.sarco.dogbreed.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.sarco.dogbreed.repository.BreedListRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /******
 Project dogBreed made with love by carlosmunoz
@@ -22,7 +15,7 @@ at 12-06-22 21:25
 com.sarco.dogbreed.viewmodels
 nobody cares about rights reserved.
  ******/
-class DogBreedViewModel(private val repository: BreedListRepository) : ViewModel() {
+class BreedViewModel(private val repository: BreedListRepository) : ViewModel() {
 
     private val TAG = "DogBreedViewModel"
 
@@ -48,8 +41,8 @@ class DogBreedViewModel(private val repository: BreedListRepository) : ViewModel
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(DogBreedViewModel::class.java)) {
-                return DogBreedViewModel(repository) as T
+            if (modelClass.isAssignableFrom(BreedViewModel::class.java)) {
+                return BreedViewModel(repository) as T
             } else {
                 throw NullPointerException("ViewModel Class Unknown")
             }
