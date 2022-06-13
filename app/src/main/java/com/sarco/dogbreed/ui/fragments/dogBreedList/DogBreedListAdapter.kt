@@ -3,10 +3,8 @@ package com.sarco.dogbreed.ui.fragments.dogBreedList
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.sarco.dogbreed.databinding.DogBreedRowItemBinding
-import com.sarco.dogbreed.databinding.FragmentDogBreedListBinding
 
 /******
 Project dogBreed made with love by carlosmunoz
@@ -15,11 +13,16 @@ at 12-06-22 20:19
 com.sarco.dogbreed.ui.fragments.dogBreedList
 nobody cares about rights reserved.
  ******/
-class DogBreedListAdapter(val list: List<Int> = listOf<Int>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),private val listener: (String) -> Unit) :
+class DogBreedListAdapter( private val listener: (String) -> Unit) :
     RecyclerView.Adapter<DogBreedListAdapter.ViewHolder>() {
-
+    private var list: List<String> = listOf()
     private lateinit var binding: DogBreedRowItemBinding
     private lateinit var context: Context
+
+    fun setNewData(newList: List<String>){
+        list = newList
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
@@ -29,7 +32,7 @@ class DogBreedListAdapter(val list: List<Int> = listOf<Int>(1, 2, 3, 4, 5, 6, 7,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            bind("Perro $position", listener)
+            bind(list[position], listener)
         }
     }
 
