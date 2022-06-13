@@ -1,4 +1,4 @@
-package com.sarco.dogbreed.ui.fragments.bredDetailList
+package com.sarco.dogbreed.ui.fragments.breedDataFavorites
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,20 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.sarco.dogbreed.R
 import com.sarco.dogbreed.data.entities.BreedData
-import com.sarco.dogbreed.databinding.BreedDetailItemRowBinding
+import com.sarco.dogbreed.databinding.BreedFavoriteItemRowBinding
 import com.sarco.dogbreed.databinding.DogBreedRowItemBinding
+import com.sarco.dogbreed.ui.fragments.dogBreedList.DogBreedListAdapter
 
 /******
 Project dogBreed made with love by carlosmunoz
-at 13-06-22 10:01
+at 13-06-22 14:45
 
-com.sarco.dogbreed.ui.fragments.bredDetailList
+com.sarco.dogbreed.ui.fragments.breedDataFavorites
 nobody cares about rights reserved.
  ******/
-class BreedDetailListAdapter(private val listener: (BreedData) -> Unit) :
-    RecyclerView.Adapter<BreedDetailListAdapter.ViewHolder>() {
+class BreedDataFavoritesAdapter(private val listener: (BreedData) -> Unit) :
+    RecyclerView.Adapter<BreedDataFavoritesAdapter.ViewHolder>() {
+
     private var list: List<BreedData> = listOf()
-    private lateinit var binding: BreedDetailItemRowBinding
+    private lateinit var binding: BreedFavoriteItemRowBinding
     private lateinit var context: Context
 
     fun setNewData(newList: List<BreedData>) {
@@ -28,15 +30,9 @@ class BreedDetailListAdapter(private val listener: (BreedData) -> Unit) :
         notifyDataSetChanged()
     }
 
-    fun updateData(breed: BreedData){
-        val result = list.find { it.imageUrl == breed.imageUrl }
-        result?.isFavorite = !breed.isFavorite
-        notifyItemChanged(list.indexOf(result))
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
-        binding = BreedDetailItemRowBinding.inflate(LayoutInflater.from(context), parent, false)
+        binding = BreedFavoriteItemRowBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -48,21 +44,24 @@ class BreedDetailListAdapter(private val listener: (BreedData) -> Unit) :
 
     override fun getItemCount(): Int = list.size
 
-    class ViewHolder(binding: BreedDetailItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(binding: BreedFavoriteItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val tvText = binding.tvBreedName
         private val ivBreedImage = binding.ivBreedImage
         private val ivIsFavorite = binding.ivIsFavorite
 
         fun bind(breed: BreedData, listener: (BreedData) -> Unit) {
+            tvText.text = breed.dogName
             ivBreedImage.load(breed.imageUrl)
             if(breed.isFavorite){
                 ivIsFavorite.setImageResource(R.drawable.ic_favorite)
             }else{
                 ivIsFavorite.setImageResource(R.drawable.ic_favorite_border)
             }
-            ivIsFavorite.setOnClickListener { listener(breed) }
+            ivIsFavorite.setOnClickListener {
+                listener(breed)
+            }
 
         }
 
     }
-
 }

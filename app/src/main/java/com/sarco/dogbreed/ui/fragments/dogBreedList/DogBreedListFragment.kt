@@ -1,14 +1,13 @@
 package com.sarco.dogbreed.ui.fragments.dogBreedList
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sarco.dogbreed.R
 import com.sarco.dogbreed.data.api.BreedNetwork
@@ -58,9 +57,9 @@ class DogBreedListFragment : Fragment() {
         }
 
         viewModel.dogBreedListInfo.observe(viewLifecycleOwner) {
-            if(it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 adapter.setNewData(it)
-            }else{
+            } else {
                 Toast.makeText(context, "Data not retrieved", Toast.LENGTH_SHORT).show()
             }
         }
@@ -90,11 +89,28 @@ class DogBreedListFragment : Fragment() {
         };
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_favorites -> {
+                findNavController().navigate(R.id.action_dogBreedListFragment_to_breedDataFavoritesFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private fun setupUI() {
         binding.recyclerViewDogBreed.apply {
             adapter = this@DogBreedListFragment.adapter
             layoutManager = GridLayoutManager(context, 2)
         }
+
+        setHasOptionsMenu(true)
     }
 }

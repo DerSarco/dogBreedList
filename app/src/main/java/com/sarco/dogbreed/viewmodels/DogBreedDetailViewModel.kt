@@ -10,6 +10,7 @@ import com.sarco.dogbreed.repository.BreedListRepository
 import com.sarco.dogbreed.service.BreedListService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,8 +36,11 @@ class DogBreedDetailViewModel(
     fun getBreedImages(breedName: String) = viewModelScope.launch {
         loading.postValue(true)
         withContext(Dispatchers.IO){
-            breedImageList.postValue(repository.getBreedImages(breedName).first()).also {
+            val breedDetailListResult = repository.getBreedImages(breedName.lowercase()).firstOrNull().also {
                 loading.postValue(false)
+            }
+            if(!breedDetailListResult.isNullOrEmpty()){
+                breedImageList.postValue(breedDetailListResult)
             }
         }
     }

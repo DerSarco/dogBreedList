@@ -11,11 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.gson.Gson
 import com.sarco.dogbreed.R
 import com.sarco.dogbreed.data.api.BreedNetwork
+import com.sarco.dogbreed.data.entities.BreedData
 import com.sarco.dogbreed.databinding.FragmentBreedDetailListBinding
 import com.sarco.dogbreed.repository.BreedListRepository
 import com.sarco.dogbreed.service.BreedListService
+import com.sarco.dogbreed.userFavs
 import com.sarco.dogbreed.viewmodels.DogBreedDetailViewModel
 import com.sarco.dogbreed.viewmodels.DogBreedViewModel
 
@@ -29,6 +32,7 @@ class BreedDetailListFragment : Fragment() {
     private lateinit var adapter: BreedDetailListAdapter
 
     private lateinit var viewModel: DogBreedDetailViewModel
+
 
     private val service = BreedListService(BreedNetwork.getRetrofitAllBreedList())
     private val repository = BreedListRepository(service)
@@ -55,7 +59,7 @@ class BreedDetailListFragment : Fragment() {
             adapter = this@BreedDetailListFragment.adapter
             layoutManager = GridLayoutManager(context, 2)
         }
-
+        activity?.title = breed
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
 
@@ -63,7 +67,24 @@ class BreedDetailListFragment : Fragment() {
 
     private fun setupAdapter() {
         adapter = BreedDetailListAdapter {
-            Toast.makeText(context, it.dogName, Toast.LENGTH_SHORT).show()
+            adapter.updateData(it)
+            val userFavsSP = userFavs.favoritesBreeds
+            if (it.isFavorite) {
+                val jsonSerialized = Gson().fromJson(userFavsSP, Array<BreedData>::class.java).toMutableList()
+                jsonSerialized.add(it)
+                val toJson = Gson().toJson(jsonSerialized)
+                userFavs.favoritesBreeds = toJson
+
+            } else {
+                val jsonSerialized = Gson().fromJson(userFavsSP, Array<BreedData>::class.java).toMutableList()
+                val finded = jsonSerialized.find { breedSP ->
+                    breedSP.imageUrl == it.imageUrl
+                }
+                jsonSerialized.removeAt(jsonSerialized.indexOf(finded))
+                adapter.setNewData(jsonSerialized.toList())
+                val toJson = Gson().toJson(jsonSerialized)
+                userFavs.favoritesBreeds = toJson
+            }
         }
     }
 
@@ -72,6 +93,7 @@ class BreedDetailListFragment : Fragment() {
             this,
             DogBreedDetailViewModel.DogBreedDetailFactory(repository)
         )[DogBreedDetailViewModel::class.java]
+
     }
 
     private fun setupObservers() {
@@ -83,7 +105,11 @@ class BreedDetailListFragment : Fragment() {
         }
 
         viewModel.breedImageListInfo.observe(viewLifecycleOwner) {
-            adapter.setNewData(it)
+            if (it.isNotEmpty()) {
+                adapter.setNewData(it)
+            } else {
+                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -100,6 +126,7 @@ class BreedDetailListFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        activity?.title = getString(R.string.app_name)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(false)
         super.onDestroy()

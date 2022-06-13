@@ -12,6 +12,6 @@ nobody cares about rights reserved.
 data class BreedData(
     val imageUrl: String,
     val dogName: String = "",
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean = false
 )
 

@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_dogBreedListFragment_to_breedDetailListFragment"
             app:destination="@id/breedDetailListFragment" />
+        <action
+            android:id="@+id/action_dogBreedListFragment_to_breedDataFavoritesFragment"
+            app:destination="@id/breedDataFavoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/breedDetailListFragment"
         android:name="com.sarco.dogbreed.ui.fragments.bredDetailList.BreedDetailListFragment"
         android:label="fragment_breed_detail_list"
         tools:layout="@layout/fragment_breed_detail_list" />
+    <fragment
+        android:id="@+id/breedDataFavoritesFragment"
+        android:name="com.sarco.dogbreed.ui.fragments.breedDataFavorites.BreedDataFavoritesFragment"
+        android:label="fragment_breed_data_favorites"
+        tools:layout="@layout/fragment_breed_data_favorites" />
 </navigation>

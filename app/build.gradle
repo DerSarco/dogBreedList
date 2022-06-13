@@ -37,6 +37,7 @@ android {
 
 def navigation_version = "2.4.2"
 def lifecycle_version = "2.5.0-rc01"
+def room_version = "2.3.0"
 
 dependencies {
 
@@ -50,17 +51,15 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
     //Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
 
     //Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
+
     //Gson
     implementation 'com.google.code.gson:gson:2.8.9'
-
-    //Scalars
-    implementation 'com.squareup.retrofit2:converter-scalars:2.7.1'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

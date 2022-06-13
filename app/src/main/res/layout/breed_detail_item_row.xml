@@ -8,14 +8,14 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="12dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/ivBreedImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="fitCenter"
             tools:src="@mipmap/ic_launcher"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,19 +23,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tvBreedTitle"/>
 
-        <TextView
-            android:id="@+id/tvBreedTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Hello!" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/ivIsFavorite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_gravity="end"
+            android:focusable="true"
+            android:clickable="true"
+            android:backgroundTint="@color/white"
+            android:background="@android:color/transparent"
+            />
+    </FrameLayout>
 
 </androidx.cardview.widget.CardView>
