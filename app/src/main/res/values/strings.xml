@@ -2,4 +2,7 @@
     <string name="app_name">The Awesome Dog Breed App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_clean">Clean</string>
+    <string name="menu_filters">Filters</string>
+    <string name="menu_favorites">Favorites</string>
 </resources>
