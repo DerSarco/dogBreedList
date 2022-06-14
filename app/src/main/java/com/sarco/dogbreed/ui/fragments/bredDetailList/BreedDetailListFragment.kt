@@ -18,6 +18,8 @@ import com.sarco.dogbreed.databinding.FragmentBreedDetailListBinding
 import com.sarco.dogbreed.repository.BreedListRepository
 import com.sarco.dogbreed.service.BreedListService
 import com.sarco.dogbreed.userFavs
+import com.sarco.dogbreed.utils.addNewFav
+import com.sarco.dogbreed.utils.deleteFav
 import com.sarco.dogbreed.viewmodels.BreedDetailViewModel
 
 class BreedDetailListFragment : Fragment() {
@@ -40,7 +42,7 @@ class BreedDetailListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentBreedDetailListBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
@@ -66,22 +68,10 @@ class BreedDetailListFragment : Fragment() {
     private fun setupAdapter() {
         adapter = BreedDetailListAdapter {
             adapter.updateData(it)
-            val userFavsSP = userFavs.favoritesBreeds
             if (it.isFavorite) {
-                val jsonSerialized = Gson().fromJson(userFavsSP, Array<BreedData>::class.java).toMutableList()
-                jsonSerialized.add(it)
-                val toJson = Gson().toJson(jsonSerialized)
-                userFavs.favoritesBreeds = toJson
-
+                addNewFav(it)
             } else {
-                val jsonSerialized = Gson().fromJson(userFavsSP, Array<BreedData>::class.java).toMutableList()
-                val finded = jsonSerialized.find { breedSP ->
-                    breedSP.imageUrl == it.imageUrl
-                }
-                jsonSerialized.removeAt(jsonSerialized.indexOf(finded))
-                adapter.setNewData(jsonSerialized.toList())
-                val toJson = Gson().toJson(jsonSerialized)
-                userFavs.favoritesBreeds = toJson
+                adapter.setNewData(deleteFav(it))
             }
         }
     }

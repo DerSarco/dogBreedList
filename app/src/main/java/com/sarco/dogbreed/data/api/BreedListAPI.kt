@@ -1,8 +1,6 @@
 package com.sarco.dogbreed.data.api
 
-import com.sarco.dogbreed.data.entities.BreedData
 import com.sarco.dogbreed.data.entities.BreedListResponse
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 

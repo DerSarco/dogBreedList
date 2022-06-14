@@ -27,7 +27,7 @@ class BreedViewModel(private val repository: BreedListRepository) : ViewModel() 
     val dogBreedListInfo: MutableLiveData<List<String>>
         get() = dogBreedList
 
-    suspend fun getBreedList() = viewModelScope.launch() {
+    suspend fun getBreedList() = viewModelScope.launch {
         loading.postValue(true)
         val dataResponse = repository.getBreedList().first()
         dogBreedList.postValue(dataResponse).also {

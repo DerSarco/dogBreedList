@@ -47,7 +47,6 @@ class BreedListAdapter(private val listener: (String) -> Unit) :
             rowCardItem.setOnClickListener {
                listener(tvText.text.toString())
             }
-
         }
 
     }

@@ -11,7 +11,10 @@
         <entry key="app/src/main/res/layout/fragment_breed_data_favorites.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/fragment_breed_detail_list.xml" value="0.184375" />
         <entry key="app/src/main/res/layout/fragment_dog_breed_list.xml" value="0.19479166666666667" />
-        <entry key="app/src/main/res/menu/menu_list.xml" value="0.146875" />
+        <entry key="app/src/main/res/menu-v26/menu_filter.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/menu-v26/menu_list.xml" value="0.18333333333333332" />
+        <entry key="app/src/main/res/menu/menu_filter.xml" value="0.178125" />
+        <entry key="app/src/main/res/menu/menu_list.xml" value="0.8875320434570313" />
         <entry key="app/src/main/res/menu/my_nav.xml" value="0.19479166666666667" />
       </map>
     </option>

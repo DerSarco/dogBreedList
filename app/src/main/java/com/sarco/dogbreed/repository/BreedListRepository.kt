@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.sarco.dogbreed.data.entities.BreedData
 import com.sarco.dogbreed.service.BreedListService
 import com.sarco.dogbreed.userFavs
+import com.sarco.dogbreed.utils.getUsersFavs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -40,7 +41,7 @@ class BreedListRepository(private val service: BreedListService) {
 
     private fun mapToBreedData(orThrow: List<String>, breedName: String): List<BreedData> {
         val breedDataList = arrayListOf<BreedData>()
-        val jsonFavs = Gson().fromJson(userFavs.favoritesBreeds, Array<BreedData>::class.java)
+        val jsonFavs = getUsersFavs()
 
         for (i in orThrow) {
             val breed = BreedData(

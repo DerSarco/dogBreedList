@@ -1,19 +1,23 @@
 package com.sarco.dogbreed.ui.fragments.breedDataFavorites
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.gson.Gson
-import com.sarco.dogbreed.data.entities.BreedData
+import com.sarco.dogbreed.R
 import com.sarco.dogbreed.databinding.FragmentBreedDataFavoritesBinding
-import com.sarco.dogbreed.userFavs
+import com.sarco.dogbreed.utils.deleteFav
+import com.sarco.dogbreed.utils.getFilteredList
+import com.sarco.dogbreed.utils.getFiltersFavs
+import com.sarco.dogbreed.utils.getUsersFavs
 
 class BreedDataFavoritesFragment : Fragment() {
+
+    private val TAG = "BreedDataFavoritesFragment"
 
     private lateinit var binding: FragmentBreedDataFavoritesBinding
 
@@ -35,29 +39,110 @@ class BreedDataFavoritesFragment : Fragment() {
             adapter = this@BreedDataFavoritesFragment.adapter
             layoutManager = GridLayoutManager(context, 2)
         }
-        val userFavsSP = userFavs.favoritesBreeds
-        val jsonSerialized =
-            Gson().fromJson(userFavsSP, Array<BreedData>::class.java).toMutableList()
-        adapter.setNewData(jsonSerialized)
+        adapter.setNewData(getUsersFavs())
+
+        activity?.title = "Favorites"
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_filter, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun setupAdapter() {
         adapter = BreedDataFavoritesAdapter {
-            deleteBreedFavorite(it)
+            with(adapter) {
+                if (selectedItems.size != 0) {
+                    deleteFav(it)
+                    setNewData(getFilteredList(selectedItems))
+                } else {
+                    setNewData(deleteFav(it))
+                }
+            }
         }
     }
 
-    private fun deleteBreedFavorite(it: BreedData) {
-        val userFavsSP = userFavs.favoritesBreeds
-        val jsonSerialized =
-            Gson().fromJson(userFavsSP, Array<BreedData>::class.java).toMutableList()
-        val finded = jsonSerialized.find { breedSP ->
-            breedSP.imageUrl == it.imageUrl
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+                true
+            }
+            R.id.menu_filters -> {
+                displayFiltersDialog()
+                true
+            }
+            R.id.menu_clear -> {
+                adapter.setNewData(getUsersFavs())
+                Toast.makeText(context, "Filters cleaned!", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
-        jsonSerialized.removeAt(jsonSerialized.indexOf(finded))
-        adapter.setNewData(jsonSerialized.toList())
-        val toJson = Gson().toJson(jsonSerialized)
-        userFavs.favoritesBreeds = toJson
+    }
+
+    private val selectedItems = mutableListOf<String>()
+    private fun displayFiltersDialog() {
+        val filtersForDialog = getFiltersForDialog()
+        val dialog = AlertDialog.Builder(context!!)
+
+        val selectedBooleans = getSelectedFilters(filtersForDialog)
+
+        dialog.setTitle("Select Breed for filter").setMultiChoiceItems(
+            filtersForDialog, selectedBooleans.toBooleanArray()
+        ) { _, which, isChecked ->
+            if (isChecked) {
+                // If the user checked the item, add it to the selected items
+                selectedItems.add(filtersForDialog[which].lowercase())
+            } else if (selectedItems.contains(filtersForDialog[which].lowercase())) {
+                // Else, if the item is already in the array, remove it
+                selectedItems.remove(filtersForDialog[which].lowercase())
+            }
+        }.setPositiveButton(
+            "Accept"
+        ) { _, _ ->
+            Log.d(TAG, selectedItems.toString())
+            if (selectedItems.size != 0) {
+                adapter.setNewData(getFilteredList(selectedItems))
+            } else {
+                adapter.setNewData(getUsersFavs())
+            }
+        }
+            .setNegativeButton(
+                "Close"
+            ) { _, _ ->
+
+            }
+
+        dialog.create().show()
+    }
+
+    private fun getSelectedFilters(filtersForDialog: Array<String>): ArrayList<Boolean> {
+        val selectedBooleans = arrayListOf<Boolean>()
+        filtersForDialog.forEach { filter ->
+            if (selectedItems.contains(filter.replaceFirstChar { it.lowercase() })) {
+                selectedBooleans.add(true)
+            } else {
+                selectedBooleans.add(false)
+            }
+        }
+        return selectedBooleans
+    }
+
+    private fun getFiltersForDialog(): Array<String> {
+        return getFiltersFavs().toTypedArray()
+    }
+
+
+    override fun onDestroy() {
+        activity?.title = getString(R.string.app_name)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
+        super.onDestroy()
     }
 
 

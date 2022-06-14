@@ -48,7 +48,7 @@ class BreedDataFavoritesAdapter(private val listener: (BreedData) -> Unit) :
         private val ivIsFavorite = binding.ivIsFavorite
 
         fun bind(breed: BreedData, listener: (BreedData) -> Unit) {
-            tvText.text = breed.dogName
+            tvText.text = breed.dogName.replaceFirstChar { it.uppercase() }
             ivBreedImage.load(breed.imageUrl)
             if(breed.isFavorite){
                 ivIsFavorite.setImageResource(R.drawable.ic_favorite)
