@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sarco.dogbreed.R
 import com.sarco.dogbreed.databinding.FragmentBreedDataFavoritesBinding
@@ -14,14 +15,16 @@ import com.sarco.dogbreed.utils.deleteFav
 import com.sarco.dogbreed.utils.getFilteredList
 import com.sarco.dogbreed.utils.getFiltersFavs
 import com.sarco.dogbreed.utils.getUsersFavs
+import com.sarco.dogbreed.viewmodels.BreedDataFavoritesViewModel
 
 class BreedDataFavoritesFragment : Fragment() {
 
     private val TAG = "BreedDataFavoritesFragment"
 
     private lateinit var binding: FragmentBreedDataFavoritesBinding
-
     private lateinit var adapter: BreedDataFavoritesAdapter
+
+    private val viewModel: BreedDataFavoritesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +42,11 @@ class BreedDataFavoritesFragment : Fragment() {
             adapter = this@BreedDataFavoritesFragment.adapter
             layoutManager = GridLayoutManager(context, 2)
         }
-        adapter.setNewData(getUsersFavs())
+        if (viewModel.selectedItemsInfo.size != 0)
+            adapter.setNewData(getFilteredList(viewModel.selectedItemsInfo))
+        else
+            adapter.setNewData(getUsersFavs())
+
 
         activity?.title = "Favorites"
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -54,9 +61,9 @@ class BreedDataFavoritesFragment : Fragment() {
     private fun setupAdapter() {
         adapter = BreedDataFavoritesAdapter {
             with(adapter) {
-                if (selectedItems.size != 0) {
+                if (viewModel.selectedItemsInfo.size != 0) {
                     deleteFav(it)
-                    setNewData(getFilteredList(selectedItems))
+                    setNewData(getFilteredList(viewModel.selectedItemsInfo))
                 } else {
                     setNewData(deleteFav(it))
                 }
@@ -85,29 +92,26 @@ class BreedDataFavoritesFragment : Fragment() {
         }
     }
 
-    private val selectedItems = mutableListOf<String>()
+
     private fun displayFiltersDialog() {
-        val filtersForDialog = getFiltersForDialog()
+        val filtersForDialog = viewModel.getFiltersForDialog()
         val dialog = AlertDialog.Builder(context!!)
-
-        val selectedBooleans = getSelectedFilters(filtersForDialog)
-
+        val selectedBooleans = viewModel.getSelectedFilters(filtersForDialog)
         dialog.setTitle("Select Breed for filter").setMultiChoiceItems(
-            filtersForDialog, selectedBooleans.toBooleanArray()
+            filtersForDialog, selectedBooleans
         ) { _, which, isChecked ->
             if (isChecked) {
                 // If the user checked the item, add it to the selected items
-                selectedItems.add(filtersForDialog[which].lowercase())
-            } else if (selectedItems.contains(filtersForDialog[which].lowercase())) {
+                viewModel.addFilters(filtersForDialog[which])
+            } else if (viewModel.checkFilterIfExist(filtersForDialog[which])) {
                 // Else, if the item is already in the array, remove it
-                selectedItems.remove(filtersForDialog[which].lowercase())
+                viewModel.removeFilters(filtersForDialog[which])
             }
         }.setPositiveButton(
             "Accept"
         ) { _, _ ->
-            Log.d(TAG, selectedItems.toString())
-            if (selectedItems.size != 0) {
-                adapter.setNewData(getFilteredList(selectedItems))
+            if (viewModel.selectedItemsInfo.size != 0) {
+                adapter.setNewData(getFilteredList(viewModel.selectedItemsInfo))
             } else {
                 adapter.setNewData(getUsersFavs())
             }
@@ -119,22 +123,6 @@ class BreedDataFavoritesFragment : Fragment() {
             }
 
         dialog.create().show()
-    }
-
-    private fun getSelectedFilters(filtersForDialog: Array<String>): ArrayList<Boolean> {
-        val selectedBooleans = arrayListOf<Boolean>()
-        filtersForDialog.forEach { filter ->
-            if (selectedItems.contains(filter.replaceFirstChar { it.lowercase() })) {
-                selectedBooleans.add(true)
-            } else {
-                selectedBooleans.add(false)
-            }
-        }
-        return selectedBooleans
-    }
-
-    private fun getFiltersForDialog(): Array<String> {
-        return getFiltersFavs().toTypedArray()
     }
 
 
