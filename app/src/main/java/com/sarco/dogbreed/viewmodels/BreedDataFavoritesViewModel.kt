@@ -16,8 +16,6 @@ class BreedDataFavoritesViewModel: ViewModel() {
         get() = selectedItems
 
     private val selectedBooleans = arrayListOf<Boolean>()
-    val selectedBooleansInfo: List<Boolean>
-        get() = selectedBooleans
 
 
     fun getSelectedFilters(filtersForDialog: Array<String>): BooleanArray {

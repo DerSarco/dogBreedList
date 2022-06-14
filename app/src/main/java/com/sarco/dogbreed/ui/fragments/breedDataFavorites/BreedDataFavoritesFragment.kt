@@ -1,7 +1,6 @@
 package com.sarco.dogbreed.ui.fragments.breedDataFavorites
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -13,7 +12,6 @@ import com.sarco.dogbreed.R
 import com.sarco.dogbreed.databinding.FragmentBreedDataFavoritesBinding
 import com.sarco.dogbreed.utils.deleteFav
 import com.sarco.dogbreed.utils.getFilteredList
-import com.sarco.dogbreed.utils.getFiltersFavs
 import com.sarco.dogbreed.utils.getUsersFavs
 import com.sarco.dogbreed.viewmodels.BreedDataFavoritesViewModel
 
