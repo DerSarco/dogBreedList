@@ -30,7 +30,6 @@ class BreedDetailListFragment : Fragment() {
 
     private lateinit var binding: FragmentBreedDetailListBinding
     private lateinit var adapter: BreedDetailListAdapter
-
     private lateinit var viewModel: BreedDetailViewModel
 
 
@@ -71,7 +70,7 @@ class BreedDetailListFragment : Fragment() {
             if (it.isFavorite) {
                 addNewFav(it)
             } else {
-                adapter.setNewData(deleteFav(it))
+                deleteFav(it)
             }
         }
     }
